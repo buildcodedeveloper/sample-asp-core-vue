@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-MVC", "0-MVC", "{E5827417-A617-41B6-80B3-B8047D182F17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fm.cred.front.mvc", "code\fm.cred.front.mvc\fm.cred.front.mvc.csproj", "{AE376ABC-E255-4C16-80D6-5880F81E48BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AE376ABC-E255-4C16-80D6-5880F81E48BB} = {E5827417-A617-41B6-80B3-B8047D182F17}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE376ABC-E255-4C16-80D6-5880F81E48BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE376ABC-E255-4C16-80D6-5880F81E48BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE376ABC-E255-4C16-80D6-5880F81E48BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE376ABC-E255-4C16-80D6-5880F81E48BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

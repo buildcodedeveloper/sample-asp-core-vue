@@ -1,0 +1,62 @@
+﻿@model IEnumerable<fm.cred.front.mvc.Models.ConfiguracaoGeralVM>;
+
+    @{
+    ViewData["Title"] = "Home Page";
+    }
+
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+
+    <div class="row">
+        @{var price=25;}
+        @foreach (var config in Model.OrderBy(c => c.VlOrdem))
+        {
+            var tipoHtml = config.TipoCampo.TipoCampoHtml;
+        <div class="@config.Class_Css">
+
+            <label>@config.NoCampo</label>
+            @if(tipoHtml.Equals(TipoCampoHtml.TEXT)){
+            <input name="@config.TipoCampo.DsTipoCampo" class="form-control"
+                asp-is-disabled="@config.FlAtivo"></input>
+            }
+             else if(tipoHtml.Equals(TipoCampoHtml.RADIO) | tipoHtml.Equals(TipoCampoHtml.CHECKBOX) |
+                 tipoHtml.Equals(TipoCampoHtml.SELECT))
+                 {
+                     @if(tipoHtml.Equals(TipoCampoHtml.SELECT)){
+                        <!-- <select name="@config.TipoCampo.DsTipoCampo" class="form-control" asp-is-disabled="@config.FlAtivo"> -->
+                        @foreach (var option in config.OptionConfig.OrderBy(o => o.Order))
+                        {
+                            <!-- <option value="@option.Id">@option.Nome</option> -->
+                            <!-- <input type="radio" name="@config.TipoCampo.DsTipoCampo" id="@option.Id" value="@option.Id" /> -->
+                             <input type="checkbox" checked='@(option.Checked ? "checked" : "")' name="@config.TipoCampo.DsTipoCampo" id="@config.TipoCampo.DsTipoCampo"  />
+
+                            <label>@option.Nome</label>
+                        }
+                        <!-- </select> -->
+                     } else if(tipoHtml.Equals(TipoCampoHtml.RADIO)) {
+                          @foreach (var option in config.OptionConfig.OrderBy(o => o.Order))
+                        {
+                             <input type="radio" name="@config.TipoCampo.DsTipoCampo" id="@option.Id" value="@option.Id" />
+                            <label>@option.Nome</label>
+                        }
+                         
+                     }
+
+                     <!-- else if(tipoHtml.Equals(TipoCampoHtml.CHECKBOX)) {
+                           @foreach (var option in config.OptionConfig.OrderBy(o => o.Order))
+                        {
+                             <input type="checkbox" name="@config.TipoCampo.DsTipoCampo" id="@config.TipoCampo.DsTipoCampo"  />
+                            <label>@option.Nome</label>
+                        }
+                     } -->
+                    
+            }           
+
+
+        </div>
+
+        }
+
+    </div>

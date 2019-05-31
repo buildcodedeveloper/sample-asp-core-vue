@@ -1,0 +1,18 @@
+[
+    {
+      'repeat(5, 10)': {
+       
+     tipo_campo: [
+       {
+         cdsistema: '{{objectId()}}',
+         cdtipocampo: '{{objectId()}}',
+         dstipocampo: '',
+         noexibicao: 'Nome',
+         dstiponatabela: '',
+         tipocampohtml: 'TEXT',            
+         class_css:  'col-md-10',
+         flativo: true
+              }]
+      }
+    }
+  ]

@@ -1,0 +1,17 @@
+[
+    {
+      'repeat(5, 3)': {
+       
+     options_config: [
+       {
+         cdEvento: '{{objectId()}}',
+         cdconfigcampo: '{{objectId()}}',
+         cdoptionconfig:'{{objectId()}}',
+         value: '{{index(1)}}',
+         text: '{{firstName()}}',
+         order: '{{integer(1, 5)}}',
+         flativo: '{{bool()}}'
+              }]
+      }
+    }
+  ]
