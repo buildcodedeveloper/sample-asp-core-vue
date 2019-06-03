@@ -1,0 +1,23 @@
+CamposOpcionais/Auxiliares
+
+id  cdEvento    cdTipoCampoHtml     nomeCampo       dsCampo       valor                     flAtivo
+1   000101      01                  optional1       Estado                                  true    
+2   000101      01                  optional2       Cidade                                  true    
+3   000101      01                  optional3       Instituto                               true    
+4   000101      01                  optional4       CRECI                                   true    
+5   000101      01                  optional5       IE                                      true    
+6   000101      02                  optional6       TIPO CONVIDADO                          true    
+
+
+
+TipoCampoHTML
+id          descricao           flAtivo
+1           TEXT                true        
+2           SELECT              true        
+3           NUMBER              true        
+4           DATETIME            true        
+5           EMAIL               true        
+6           HIDDEN              true        
+
+
+Optional
