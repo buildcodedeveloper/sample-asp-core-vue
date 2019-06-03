@@ -29,7 +29,7 @@
     "dstipocampo": "CdCategoria",
     "noexibicao": "Categoria",
     "dstiponatabela": "",
-    "tipocampohtml": "CHECKBOX",
+    "tipocampohtml": "SELECT",
     "classcss": "col-md-6",
     "flativo": true
 

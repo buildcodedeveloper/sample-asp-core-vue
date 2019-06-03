@@ -38,7 +38,7 @@ namespace fm.cred.front.mvc.Service {
                     var tipoCampo = tipoCampoVMList.FirstOrDefault (t => t.CdTipoCampo.Equals (configCampo.CdTipoCampo));
                     configCampo.TipoCampo = tipoCampo;
 
-                    if (tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.CHECKBOX) | tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.RADIO))
+                    if (tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.CHECKBOX) | tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.SELECT) | tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.RADIO))
                         GetSelectOption (optionConfigVMList, configCampo);
                 }
 
