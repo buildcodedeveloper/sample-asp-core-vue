@@ -24,13 +24,13 @@
              else if(tipoHtml.Equals(TipoCampoHtml.RADIO) | tipoHtml.Equals(TipoCampoHtml.CHECKBOX) |
                  tipoHtml.Equals(TipoCampoHtml.SELECT))
                  {
-                     @if(tipoHtml.Equals(TipoCampoHtml.SELECT)){
+                     @if(tipoHtml.Equals(TipoCampoHtml.CHECKBOX)){
                         <!-- <select name="@config.TipoCampo.DsTipoCampo" class="form-control" asp-is-disabled="@config.FlAtivo"> -->
                         @foreach (var option in config.OptionConfig.OrderBy(o => o.Order))
                         {
                             <!-- <option value="@option.Id">@option.Nome</option> -->
                             <!-- <input type="radio" name="@config.TipoCampo.DsTipoCampo" id="@option.Id" value="@option.Id" /> -->
-                             <input type="checkbox" checked='@(option.Checked ? "checked" : "")' name="@config.TipoCampo.DsTipoCampo" id="@config.TipoCampo.DsTipoCampo"  />
+                             <input type="checkbox" @(option.Checked ? "checked" : "") name="@option.Id" id="@option.Id"  />
 
                             <label>@option.Nome</label>
                         }
@@ -41,7 +41,7 @@
                              <input type="radio" name="@config.TipoCampo.DsTipoCampo" id="@option.Id" value="@option.Id" />
                             <label>@option.Nome</label>
                         }
-                         
+
                      }
 
                      <!-- else if(tipoHtml.Equals(TipoCampoHtml.CHECKBOX)) {
@@ -51,8 +51,8 @@
                             <label>@option.Nome</label>
                         }
                      } -->
-                    
-            }           
+
+            }
 
 
         </div>

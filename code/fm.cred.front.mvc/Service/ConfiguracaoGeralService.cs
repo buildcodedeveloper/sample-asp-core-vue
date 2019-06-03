@@ -6,6 +6,7 @@ using System.Linq;
 using Bogus;
 using fm.cred.front.mvc.Helper;
 using fm.cred.front.mvc.Models;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 
 namespace fm.cred.front.mvc.Service {
@@ -13,14 +14,20 @@ namespace fm.cred.front.mvc.Service {
 
         private List<ConfiguracaoGeralVM> ConfiguracaoGeralVMList = new List<ConfiguracaoGeralVM> ();
         private List<TipoCampoVM> TipoCampoVMList = new List<TipoCampoVM> ();
+    private readonly IHostingEnvironment _env;
+
+    public ConfiguracaoGeralService(IHostingEnvironment env)
+        {
+      _env = env;
+    }
         public IEnumerable<ConfiguracaoGeralVM> Build () {
 
             try {
-                var optionsConfig = File.ReadAllText (@"D:\data\www\private\Fazendo Mais\private\web-dev\asp-net-core\core\fm-cred-front-mvc\code\fm.cred.front.mvc\Json\option.json");
+                var optionsConfig = File.ReadAllText ($@"{_env.ContentRootPath}\Json\option.json");
 
-                var tipo_campoConfig = File.ReadAllText (@"D:\data\www\private\Fazendo Mais\private\web-dev\asp-net-core\core\fm-cred-front-mvc\code\fm.cred.front.mvc\Json\tipo_campo.json");
+                var tipo_campoConfig = File.ReadAllText ($@"{_env.ContentRootPath}\Json\tipo_campo.json");
 
-                var config_campoConfig = File.ReadAllText (@"D:\data\www\private\Fazendo Mais\private\web-dev\asp-net-core\core\fm-cred-front-mvc\code\fm.cred.front.mvc\Json\config_campo.json");
+                var config_campoConfig = File.ReadAllText ($@"{_env.ContentRootPath}\Json\config_campo.json");
 
                 var optionConfigVMList = JsonConvert.DeserializeObject<List<OptionConfig>> (optionsConfig);
                 var configuracaoGeralVMList = JsonConvert.DeserializeObject<List<ConfiguracaoGeralVM>> (config_campoConfig);
@@ -31,7 +38,7 @@ namespace fm.cred.front.mvc.Service {
                     var tipoCampo = tipoCampoVMList.FirstOrDefault (t => t.CdTipoCampo.Equals (configCampo.CdTipoCampo));
                     configCampo.TipoCampo = tipoCampo;
 
-                    if (tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.SELECT) | tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.RADIO))
+                    if (tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.CHECKBOX) | tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.RADIO))
                         GetSelectOption (optionConfigVMList, configCampo);
                 }
 

@@ -2,30 +2,29 @@
 
     "cdEvento": "000101",
     "cdconfigcampo": "5ceecc723acf09ae9837a485",
-    
+
     "id": 1,
     "nome": "PARTICIPANTE",
     "order": 1,
     "flativo": true,
-    "checked": true
+    "checked": false
 
   },
   {
 
     "cdEvento": "000101",
     "cdconfigcampo": "5ceecc723acf09ae9837a485",
-    "cdoptionconfig": "5cefd4011fad7e2c3a113c50",
     "id": 2,
     "nome": "STAFF",
     "order": 2,
     "flativo": true,
-    "checked": true
+    "checked": false
   },
   {
 
     "cdEvento": "000101",
     "cdconfigcampo": "5ceecc723acf09ae9837a485",
-    
+
     "id": 3,
     "nome": "ORGANIZAÇÃO",
     "order": 3,
@@ -37,12 +36,12 @@
 
     "cdEvento": "000101",
     "cdconfigcampo": "5ceecc723acf09ae9837a485",
-    
+
     "id": 4,
     "nome": "EXPOSITOR",
     "order": 4,
     "flativo": true,
-    "checked": true
+    "checked": false
 
   }
 ]
