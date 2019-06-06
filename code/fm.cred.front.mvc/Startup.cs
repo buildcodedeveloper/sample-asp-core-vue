@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using fm.cred.front.mvc.Context;
 using fm.cred.front.mvc.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -28,6 +31,10 @@ namespace fm.cred.front.mvc {
             services.AddScoped<IMockTipoCampoService, TipoCampoService> ();
             services.AddTransient<IBaseService, Soma1Service> ();
             services.AddTransient<IBaseService, Soma2Service> ();
+
+            services.AddDbContext<DataContext>
+
+                (option => option.UseSqlServer (Configuration["database:connection"]));
 
             services.AddScoped<Func<string, IBaseService>> (serviceProvider => key => {
                 switch (key) {
@@ -51,7 +58,7 @@ namespace fm.cred.front.mvc {
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2)
                 .AddJsonOptions (options => {
                     options.SerializerSettings.Formatting = Formatting.Indented;
-                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    options.SerializerSettings.Converters.Add (new StringEnumConverter ());
                 });;
         }
 

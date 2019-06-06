@@ -1,0 +1,4 @@
+{
+    "proxy": "www.example.com/",
+    "server": { "baseDir": "./" } 
+}

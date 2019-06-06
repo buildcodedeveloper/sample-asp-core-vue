@@ -1,0 +1,38 @@
+[{
+    "id": "27373909-65a6-4ac0-9ab5-776c55e9d758",
+    "cdEvento": "000101",
+    "chave": "noParticipante",
+    "valor": "Name",
+    "cultura": "bg-BG",
+    "ambienteOption": 0,
+    "desativado": false
+  },
+  {
+    "id": "da18fc03-b3f2-4268-be39-8d3a8e34b2f2",
+    "cdEvento": "000101",
+    "chave": "nuCPFCNPJ",
+    "valor": "Passaport",
+    "cultura": "en-US",
+    "ambienteOption": 0,
+    "desativado": false
+  },
+  {
+    "id": "1079f9c9-e49e-4186-9bf5-1571449088aa",
+    "cdEvento": "000101",
+    "chave": "dsAuxiliar5",
+    "valor": "Role",
+    "cultura": "en-US",
+    "ambienteOption": 0,
+    "desativado": true
+  },
+  {
+    "id": "7558b8bb-1d54-4973-a2b1-6a5917dbdf24",
+    "cdEvento": "000101",
+    "chave": "dsEndereco",
+    "valor": "Address",
+    "cultura": "en-US",
+    "ambienteOption": 0,
+    "edsativado": false
+  }
+
+]

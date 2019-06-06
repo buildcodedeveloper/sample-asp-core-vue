@@ -14,6 +14,9 @@ namespace fm.cred.front.mvc.Models {
         [JsonProperty ("cdevento")]
         public string CdEvento { get; set; }
 
+        [JsonProperty ("formClass")]
+        public string FormClass { get; set; }
+
         [JsonProperty ("cdsistema")]
         public string CdSistema { get; set; }
 
@@ -33,7 +36,7 @@ namespace fm.cred.front.mvc.Models {
         public TipoCampoVM TipoCampo { get; set; }
 
         [JsonProperty ("dsdetalhescampo")]
-        public string DsDetalhesCampo { get; set; }
+        public DetalheCampoVM DsDetalhesCampo { get; set; }
 
         [JsonProperty ("vlordem")]
         public int VlOrdem { get; set; }

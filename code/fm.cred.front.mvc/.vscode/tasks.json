@@ -27,6 +27,7 @@
             "command": "dotnet",
             "type": "process",
             "args": [
+                
                 "watch",
                 "run",
                 "${workspaceFolder}/fm.cred.front.mvc.csproj"

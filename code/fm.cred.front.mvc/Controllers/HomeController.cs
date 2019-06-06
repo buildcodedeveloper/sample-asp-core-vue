@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
+using fm.cred.front.mvc.Context;
 using fm.cred.front.mvc.Models;
 using fm.cred.front.mvc.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace fm.cred.front.mvc.Controllers {
@@ -13,25 +17,32 @@ namespace fm.cred.front.mvc.Controllers {
         private readonly IMockConfiguracaoGeralService _mockConfiguracaoGeralService;
 
         private readonly Func<string, IBaseService> _serviceAccessor;
+        private readonly DataContext _dataContext;
 
         public HomeController (IMockConfiguracaoGeralService mockConfiguracaoGeralService,
             Func<string, IBaseService> serviceAccessor,
-            IServiceProvider serviceProvider) : base (serviceProvider) {
+            IServiceProvider serviceProvider,
+            DataContext dataContext) : base (serviceProvider) {
             _mockConfiguracaoGeralService = mockConfiguracaoGeralService;
             _serviceAccessor = serviceAccessor;
+            _dataContext = dataContext;
         }
 
         public IActionResult Index () {
-            var listMock = _mockConfiguracaoGeralService.Build ();
 
-            // var soma1Service = this.GetType<IBaseService> (typeof (Soma1Service));
-            //use serviceAccessor field to resolve desired type
+            _mockConfiguracaoGeralService.LangRouteController = "en-US";
+            var listMock = _mockConfiguracaoGeralService.Build ();
 
             return View (listMock);
         }
 
         public IActionResult Privacy () {
             return View ();
+        }
+
+        [HttpPost ("salvar")]
+        public IActionResult Created () {
+            return Ok (new { success = true });
         }
 
         [ResponseCache (Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

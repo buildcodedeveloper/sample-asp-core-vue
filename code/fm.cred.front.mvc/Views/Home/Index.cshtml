@@ -8,55 +8,75 @@
         <h1 class="display-4">Welcome</h1>
         <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>
+    <form id="app" class='@Model.FirstOrDefault()?.FormClass'>
 
-    <div class="row">
-        @{var price=25;}
-        @foreach (var config in Model.OrderBy(c => c.VlOrdem))
-        {
-            var tipoHtml = config.TipoCampo.TipoCampoHtml;
-        <div class="@config.Class_Css">
+        <h1>{{ title }}</h1>
 
-            <label>@config.NoCampo</label>
-            @if(tipoHtml.Equals(TipoCampoHtml.TEXT)){
-            <input name="@config.TipoCampo.DsTipoCampo" class="form-control"
-                asp-is-disabled="@config.FlAtivo"></input>
+
+
+
+        <div class="form-row">
+            @{var price=25;}
+
+            @foreach (var config in Model.OrderBy(c => c.VlOrdem))
+            {
+
+            <div class="@config.Class_Css">
+
+
+                @if(config.DsDetalhesCampo?.TipoCamp == null){
+                <label>@config.DsDetalhesCampo?.NomeCampoLabel</label>
+                <input  name="@config.DsDetalhesCampo?.NomeCampo" class="form-control"
+                    asp-is-disabled="@config.FlAtivo"></input>
+                }
+                else if(config.DsDetalhesCampo?.TipoCamp == "Lista" ){
+
+                <label>@config.DsDetalhesCampo?.NomeCampoLabel</label>
+
+                <select name="@config.DsDetalhesCampo?.NomeCampo" class="custom-select mr-sm-2"
+                    asp-is-disabled="@config.FlAtivo">
+                    @foreach (var option in config.DsDetalhesCampo?.Listavaores)
+                    {
+                    <option value="@option">@option</option>
+
+                    }
+                </select>
+                }
+                else if(config.DsDetalhesCampo?.TipoCamp == "CheckList" || config.DsDetalhesCampo?.TipoCamp ==
+                "OptionList" ){
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">
+                            <label>@config.DsDetalhesCampo?.NomeCampoLabel</label></legend>
+
+                        <div class="col-sm-10">
+                            @foreach (var option in config.DsDetalhesCampo?.Listavaores)
+                            {
+                            <div class="form-check">
+
+                                <input class="form-check-input"
+                                    type='@(config.DsDetalhesCampo?.TipoCamp == "CheckList" ? "checkbox" : "radio")'
+                                    name="@config.DsDetalhesCampo?.NomeCampo" id="@option" value="@option">
+                                <label class="form-check-label" for="@option">
+                                    @option
+                                </label>
+
+                            </div>
+                            }
+                        </div>
+
+                    </div>
+                </fieldset>
+                }
+                <div></div>
+            </div>
+
             }
-             else if(tipoHtml.Equals(TipoCampoHtml.RADIO) | tipoHtml.Equals(TipoCampoHtml.CHECKBOX) |
-                 tipoHtml.Equals(TipoCampoHtml.SELECT))
-                 {
-                     @if(tipoHtml.Equals(TipoCampoHtml.SELECT)){
-                        <select name="@config.TipoCampo.DsTipoCampo" class="form-control" asp-is-disabled="@config.FlAtivo">
-                        @foreach (var option in config.OptionConfig.OrderBy(o => o.Order))
-                        {
-                            <option value="@option.Id">@option.Nome</option>
-                            <!-- <input type="radio" name="@config.TipoCampo.DsTipoCampo" id="@option.Id" value="@option.Id" /> -->
-                             <!-- <input type="checkbox" @(option.Checked ? "checked" : "") name="@option.Id" id="@option.Id"  /> -->
 
-                            <label>@option.Nome</label>
-                        }
-                        </select>
-                     } else if(tipoHtml.Equals(TipoCampoHtml.RADIO)) {
-                          @foreach (var option in config.OptionConfig.OrderBy(o => o.Order))
-                        {
-                             <input type="radio" name="@config.TipoCampo.DsTipoCampo" id="@option.Id" value="@option.Id" />
-                            <label>@option.Nome</label>
-                        }
-
-                     }
-
-                     <!-- else if(tipoHtml.Equals(TipoCampoHtml.CHECKBOX)) {
-                           @foreach (var option in config.OptionConfig.OrderBy(o => o.Order))
-                        {
-                             <input type="checkbox" name="@config.TipoCampo.DsTipoCampo" id="@config.TipoCampo.DsTipoCampo"  />
-                            <label>@option.Nome</label>
-                        }
-                     } -->
-
-            }
-
+             <input v-on:click="checkForm" class="btn btn-success" type="submit" value="Submit" />
 
         </div>
 
-        }
+    </form>
 
-    </div>
+   

@@ -11,35 +11,42 @@ using Newtonsoft.Json;
 
 namespace fm.cred.front.mvc.Service {
     public class ConfiguracaoGeralService : IMockConfiguracaoGeralService {
+        public const string CultureSettings = "pt-BR";
 
         private List<ConfiguracaoGeralVM> ConfiguracaoGeralVMList = new List<ConfiguracaoGeralVM> ();
         private List<TipoCampoVM> TipoCampoVMList = new List<TipoCampoVM> ();
-    private readonly IHostingEnvironment _env;
+        private readonly IHostingEnvironment _env;
 
-    public ConfiguracaoGeralService(IHostingEnvironment env)
-        {
-      _env = env;
-    }
+        public string LangRouteController { get; set; }
+
+        public ConfiguracaoGeralService (IHostingEnvironment env) => _env = env;
         public IEnumerable<ConfiguracaoGeralVM> Build () {
 
             try {
-                var optionsConfig = File.ReadAllText ($@"{_env.ContentRootPath}\Json\option.json");
+                // var optionsConfig = File.ReadAllText ($@"{_env.ContentRootPath}\Json\option.json");
 
-                var tipo_campoConfig = File.ReadAllText ($@"{_env.ContentRootPath}\Json\tipo_campo.json");
+                // var tipo_campoConfig = File.ReadAllText ($@"{_env.ContentRootPath}\Json\tipo_campo.json");
 
                 var config_campoConfig = File.ReadAllText ($@"{_env.ContentRootPath}\Json\config_campo.json");
+                var languageConfig = File.ReadAllText ($@"{_env.ContentRootPath}\Json\language.json");
 
-                var optionConfigVMList = JsonConvert.DeserializeObject<List<OptionConfig>> (optionsConfig);
+                // var optionConfigVMList = JsonConvert.DeserializeObject<List<OptionConfig>> (optionsConfig);
                 var configuracaoGeralVMList = JsonConvert.DeserializeObject<List<ConfiguracaoGeralVM>> (config_campoConfig);
-                var tipoCampoVMList = JsonConvert.DeserializeObject<List<TipoCampoVM>> (tipo_campoConfig);
+                var languageVMList = JsonConvert.DeserializeObject<List<LanguageVM>> (languageConfig);
+
+                // var tipoCampoVMList = JsonConvert.DeserializeObject<List<TipoCampoVM>> (tipo_campoConfig);
 
                 foreach (var configCampo in configuracaoGeralVMList) {
 
-                    var tipoCampo = tipoCampoVMList.FirstOrDefault (t => t.CdTipoCampo.Equals (configCampo.CdTipoCampo));
-                    configCampo.TipoCampo = tipoCampo;
+                    string campoNome = configCampo.DsDetalhesCampo?.NomeCampo;
 
-                    if (tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.CHECKBOX) | tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.SELECT) | tipoCampo.TipoCampoHtml.Equals(TipoCampoHtml.RADIO))
-                        GetSelectOption (optionConfigVMList, configCampo);
+                    var resultLang = languageVMList.FirstOrDefault (l => l.Cultura.Equals (LangRouteController) &&
+                        l.AmbienteOption == AmbienteOption.FRONT &&
+                        l.CdEvento.Equals ("000101") &&
+                        l.Chave.ToLower ().Equals (campoNome?.ToLower ()));
+
+                    if (resultLang != null)
+                        configCampo.DsDetalhesCampo.NomeCampoLabel = resultLang.Valor;;
                 }
 
                 // var configuracaoGeralVM = new ConfiguracaoGeralVM {

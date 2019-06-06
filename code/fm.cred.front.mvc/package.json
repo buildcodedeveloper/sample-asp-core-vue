@@ -1,0 +1,16 @@
+{
+  "name": "fm.cred.front.mvc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@vue/devtools": "^5.1.0",
+    "browser-sync": "^2.26.5",
+    "connect-history-api-fallback": "^1.6.0",
+    "http-proxy-middleware": "^0.19.1",
+    "lite-server": "^2.5.3"
+  },
+  "dependencies": {
+    "vue": "^2.6.10"
+  }
+}

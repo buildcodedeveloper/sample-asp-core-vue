@@ -1,0 +1,13 @@
+[
+    {
+      'repeat(5, 10)': {
+        id: '{{guid()}}',
+        cdEvento: '000101',
+        chave: '{{surname()}}',
+        valor: '{{surname()}}',
+        ambiente: '{{integer(0, 1)}}',
+        Desativado: '{{bool()}}',
+        
+      }
+    }
+  ]
