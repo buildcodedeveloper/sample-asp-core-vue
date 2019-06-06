@@ -8,13 +8,15 @@
         <h1 class="display-4">Welcome</h1>
         <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>
-    <form id="app" class='@Model.FirstOrDefault()?.FormClass'>
-
-        <h1>{{ title }}</h1>
+    <form id="app"  class='@Model.FirstOrDefault()?.FormClass'>
 
 
 
 
+<form-generator :schema="schema" v-model="formData">
+</form-generator>
+
+<!-- 
         <div class="form-row">
             @{var price=25;}
 
@@ -73,10 +75,16 @@
 
             }
 
-             <input v-on:click="checkForm" class="btn btn-success" type="submit" value="Submit" />
+         
 
-        </div>
+        </div> -->
+
+            <input v-on:click="checkForm" class="btn btn-success" type="submit" value="Submit" />
 
     </form>
 
-   
+   @section Scripts {
+     <script>
+
+     </script>
+}

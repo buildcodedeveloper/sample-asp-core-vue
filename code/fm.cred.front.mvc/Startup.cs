@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using fm.cred.front.mvc.Context;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -71,6 +73,12 @@ namespace fm.cred.front.mvc {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts ();
             }
+            app.UseFileServer (new FileServerOptions () {
+                FileProvider = new PhysicalFileProvider (
+                        Path.Combine (Directory.GetCurrentDirectory (), @"node_modules")),
+                    RequestPath = new PathString ("/node_modules"),
+                    EnableDirectoryBrowsing = true
+            });
 
             app.UseHttpsRedirection ();
             app.UseStaticFiles ();

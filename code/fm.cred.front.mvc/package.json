@@ -11,6 +11,8 @@
     "lite-server": "^2.5.3"
   },
   "dependencies": {
+    "requirejs": "^2.3.6",
+    "vee-validate": "^2.2.9",
     "vue": "^2.6.10"
   }
 }
