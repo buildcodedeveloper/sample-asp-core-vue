@@ -1,4 +1,7 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿
+import axios from '~/node_modules/axios/dist/axios.min.js';
+
+// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
@@ -20,8 +23,10 @@ const apiUrl = 'https://openwhisk.ng.bluemix.net/api/v1/web/rcamden%40us.ibm.com
 //     validity: true,
 //     useConstraintAttrs: true
 //   };
+Vue.prototype.$axios = axios
 
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, axios )
+
 
 
 
@@ -38,7 +43,7 @@ Vue.component('form-generator', {
                v-bind="field">
     </component>
   </div>
- `,
+ `,inject: ['$validator'],
     data() {
         return {
             formData: this.value || {}
@@ -77,17 +82,17 @@ Vue.component('TextInput', {
     <div>
     <label>{{label}}</label>
 
-    <input   v-validate="'required|alpha'" type="text" 
+    <input   v-validate="validate" type="text"
            :name="name"
-          
            :class="classCss"
-           
-           @input="$emit('input',$event.target.value)"
+
+
            :placeholder="placeholder"
            >
 
   </div>
     `,
+     inject: ['$validator'],
 });
 
 Vue.component('input-validate', {
@@ -97,14 +102,16 @@ Vue.component('input-validate', {
     <div>
     <label>{{label}}</label>
 
-    <input   v-validate="'required|alpha'" type="text" 
-           name="cdParticipante"          
-           class="form-control col-md-4"        
-           
+    <input   v-validate="'required|alpha'" type="text"
+           name="cdParticipante"
+           class="form-control col-md-4"
+
            >
 
   </div>
     `,
+      inject: ['$validator'],
+
 });
 
 Vue.component('SelectList', {
@@ -127,11 +134,26 @@ Vue.component('SelectList', {
   `
 });
 
+Vue.component('blog-post', {
+    props: ['title', 'user'],
+    template: `
+ <input   v-validate="'required|alpha'" type="text"
+           name="user.nome"
+           v-model="user.nome"
+           class="form-control col-md-4"
+
+           >
+    `
+
+  })
+
 const app = new Vue({
     components: {},
     el: '#app',
     data: {
-
+        user: {
+            nome: 'teste',
+        },
         formData: {},
         schema: []
         // {
@@ -216,20 +238,23 @@ const app = new Vue({
 
             this.schema = listField;
         // })
-    }
+    },
+    mounted () {
+
+      }
 })
 
 function PopulateData() {
     return [{
             fieldType: 'SelectList',
-            name: "options",           
+            name: "options",
             data: ["", "Mr", "Ms", "Mx", "Dr", "Madam", "Lord", "GOT"]
         },
         {
             fieldType: 'TextInput',
             placeholder: "Last Name",
             label: "Last Name",
-            name: "cdParticipante",           
+            name: "cdParticipante",
             classCss: 'form-control col-md-6',
         }
     ]
@@ -239,13 +264,14 @@ function PopulateData() {
 function MountedSelectList(e, $vue) {
 
 
-    
+
         return {
 
             fieldType: "SelectList",
             name: "title",
             multi: false,
-            label: "Title",         
+            label: "Title",
+            validate: "required|min:6",
             options: e.data
         }
 }
@@ -256,7 +282,7 @@ function MountedTextInput(e) {
         fieldType: "TextInput",
         placeholder: "First Name",
         label: "First Name",
-      
+        validate: "required|min:6",
         name: e.name,
         classCss: e.classCss,
     }

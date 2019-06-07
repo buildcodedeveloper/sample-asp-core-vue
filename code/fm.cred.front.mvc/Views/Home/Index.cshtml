@@ -10,13 +10,15 @@
     </div>
     <form id="app"  class='@Model.FirstOrDefault()?.FormClass'>
 
-
-
-
 <form-generator :schema="schema" v-model="formData">
 </form-generator>
 
-<!-- 
+<input v-on:click="checkForm" class="btn btn-success" type="submit" value="Submit" />
+
+    </form>
+
+
+    <!--
         <div class="form-row">
             @{var price=25;}
 
@@ -75,16 +77,13 @@
 
             }
 
-         
+
 
         </div> -->
 
-            <input v-on:click="checkForm" class="btn btn-success" type="submit" value="Submit" />
 
-    </form>
+    @section Scripts {
+    <script>
 
-   @section Scripts {
-     <script>
-
-     </script>
-}
+    </script>
+    }

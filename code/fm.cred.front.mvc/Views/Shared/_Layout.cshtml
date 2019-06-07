@@ -21,7 +21,7 @@
            <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
-    
+
 </head>
 <body>
     <header>
@@ -80,7 +80,10 @@
 <script src="node_modules/vee-validate/dist/vee-validate.min.js"></script>
 
     <script src="~/js/app.js" asp-append-version="true"></script>
-    <script src="~/js/vendor/requirejs/require.js"></script>
+
+    <script type="module"  src="~/node_modules/axios/dist/axios.min.js"></script>
+    <!-- <script src="~/node_modules/vue-axios/dist/vue-axios.min.js"></script> -->
+
 
     @RenderSection("Scripts", required: false)
 </body>
