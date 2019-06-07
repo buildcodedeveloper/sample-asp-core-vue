@@ -1,5 +1,4 @@
-﻿
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
@@ -21,27 +20,36 @@ const apiUrl = 'https://openwhisk.ng.bluemix.net/api/v1/web/rcamden%40us.ibm.com
 //     validity: true,
 //     useConstraintAttrs: true
 //   };
-// Vue.prototype.$axios = axios
 
-Vue.use(VeeValidate )
+
+
+
+Vue.use(VeeValidate, VueResource)
 
 
 
 
 
 Vue.component('form-generator', {
-    props: ["schema", "value"],
+    props: ["schema", "value", "checkForm"],
     template: `
-     <div>
-    <component v-for="(field, index) in schema"
-               :key="index"
-               :is="field.fieldType"
-               :value="formData[field.name]"
-               @input="updateForm(field.name, $event)"
-               v-bind="field">
-    </component>
+     <div class="form-row">
+     
+  <li v-for="error in errors.all()">{{ error }}</li>
+</ul>
+     <component
+                v-for="(field, index) in schema"
+                :key="index"
+                :is="field.fieldType"
+                :value="formData[field.value]"
+                @input="updateForm(field.name, $event)"
+                v-model="formData[field.name]"
+                v-bind="field"
+   ></component>
+
+
   </div>
- `,inject: ['$validator'],
+ `,
     data() {
         return {
             formData: this.value || {}
@@ -51,8 +59,10 @@ Vue.component('form-generator', {
         updateForm(fieldName, value) {
             this.$set(this.formData, fieldName, value);
             this.$emit("input", this.formData);
-        }
-    }
+        },
+
+    },
+    inject: ['$validator'],
 
 });
 
@@ -71,33 +81,57 @@ Vue.component('NumberInput', {
            :placeholder="placeholder">
   </div>
     `,
+    inject: ['$validator'],
 });
 
 Vue.component('TextInput', {
     name: 'TextInput',
-    props: ['placeholder', 'label', 'name', 'value', 'classCss', 'validate'],
+    props: ['placeholder', 'label', 'name', 'value', 'classCss', 'validate', 'default'],
     template: `
-    <div>
+    <div :class="'form-group '+classCss">
     <label>{{label}}</label>
 
     <input   v-validate="validate" type="text"
            :name="name"
-           :class="classCss"
+           class="form-control"
            :value="value"
            @input="$emit('input',$event.target.value)"
+           
            :placeholder="placeholder"
            >
 
+           <span>{{ errors.first(':name="name"') }}</span>
+
   </div>
     `,
-     inject: ['$validator'],
+    inject: ['$validator'],
+    mounted() {
+        if (this.default) {
+            console.log(this.default);
+            this.updateForm(this.fieldName, this.default);
+        }
+    },
+    methods: {
+        updateForm(fieldName, value) {
+            this.$emit("input", value);
+        },
+
+    }
+
 });
+// var link = 'http://localhost:3000/configuracaoCampos';
+
+// Vue.http.get(link).then(function(response){
+//     data.list = response.data;
+// }, function(error){
+//     console.log(error.statusText);
+// });
 
 Vue.component('input-validate', {
     name: 'input-validate',
     props: ['placeholder', 'label', 'name', 'value', 'classCss', 'validate'],
     template: `
-    <div>
+    <div >
     <label>{{label}}</label>
 
     <input   v-validate="'required|alpha'" type="text"
@@ -108,7 +142,7 @@ Vue.component('input-validate', {
 
   </div>
     `,
-      inject: ['$validator'],
+    inject: ['$validator'],
 
 });
 
@@ -120,11 +154,13 @@ Vue.component('SelectList', {
     <label>{{label}}</label>
     <select :multiple="multi"
             :value="value"
+            :name="name"
+            class="custom-select"
             :v-validate="validate"
             @input="$emit('input',
            $event.target.value)">
       <option v-for="option in options"
-              :key="option">
+              :key="option" :value="option">
         {{option}}
       </option>
     </select>
@@ -143,145 +179,244 @@ Vue.component('blog-post', {
            >
     `
 
-  })
-
+})
+const ENDPOINT = 'https://api.github.com/orgs/codecasts/repos';
 const app = new Vue({
     components: {},
+    props: ["schema", "value"],
     el: '#app',
+    inject: ['$validator'],
     data: {
-        user: {
-            nome: 'teste',
-        },
-        formData: {},
-        schema: []
-        // {
-        //   fieldType: "TextInput",
-        //   placeholder: "First Name",
-        //   label: "First Name",
-        //   name: "firstName",
-        //   classCss: 'form-control col-md-6',
-        // },
-        // {
-        //   fieldType: "TextInput",
-        //   placeholder: "Last Name",
-        //   label: "Last Name",
-        //   name: "lastName",
-        //   classCss: 'form-control col-md-6',
-        // },
-        // {
-        //   fieldType: "NumberInput",
-        //   placeholder: "Age",
-        //   name: "age",
-        //   label: "Age",
-        //   minValue: 0
-        // }
 
-
+        formData: this.value || {},
+        schema: [],
+        listField: [],
+        repos: [],
     },
     methods: {
+
+
+        getJsonConfig() {
+
+
+
+            return this.listConfig;
+        },
         checkForm: function (e) {
             e.preventDefault();
 
 
-           this.$validator.validateAll().then((result) => {
+            this.$validator.validateAll().then((result) => {
                 if (result) {
-                  // eslint-disable-next-line
-                  console.log(this.formData);
-                  console.log('Form Submitted!');
-                  return;
+                    // eslint-disable-next-line
+                    console.log(JSON.stringify(this.formData));
+                    console.log('Form Submitted!');
+                    return;
                 }
 
                 console.log('Correct them errors!');
-              });
-
-
-            // this.errors = [];
-            // if (this.name === '') {
-            //     this.errors.push('Product name is required.');
-            // } else {
-            //     console.log(this.form);
-            // }
-        }
-    },
-
-    created: function () {
-        // this.$nextTick(function () {
-            // Código que irá rodar apenas após toda
-            // a árvore do componente ter sido renderizada
-            var listField = [];
-            var data = PopulateData();
-
-            data.forEach(e => {
-                var fieldType = {};
-
-                console.log(e.fieldType)
-                switch (e.fieldType.toLowerCase()) {
-                    case 'SelectList'.toLowerCase():
-                        fieldType = MountedSelectList(e, this);
-                        break;
-
-                    case 'TextInput'.toLowerCase():
-                        fieldType = MountedTextInput(e);
-                        break;
-
-                    default:
-                        break;
-                }
-
-
-
-                listField.push(fieldType);
             });
 
+        },
 
-            this.schema = listField;
-        // })
+
     },
-    mounted () {
+    // beforeMount() {
+    //     this.$http.get(ENDPOINT)
+    //     .then(response => response.data)
+    //     .then(data => Vue.set(this, 'repos', data));
+    //     console.log(this.repos)
 
-      }
+    // },
+    mounted() {
+        // console.log(this.repos)
+        this.$nextTick(function () {
+            this.$http.get('http://localhost:3000/configuracaoCampos')
+                .then(response => response.json())
+                .then(json => {
+                    // .then((response) => {     
+
+                    this.listField = [];
+
+
+                    if (json) {
+                        json.forEach(e => {
+                            var fieldType = {};
+
+
+                            switch (e.tipoCampo.tipocampohtml.toLowerCase()) {
+                                case 'SELECT'.toLowerCase():
+                                    fieldType = MountedSelectList(e, this);
+                                    break;
+
+                                case 'TEXT'.toLowerCase():
+                                    fieldType = MountedTextInput(e);
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+
+
+                            this.listField.push(fieldType);
+                        });
+                    }
+
+
+
+                    this.schema = this.listField;
+                }, (error) => {
+                    consoel.log(error)
+                });
+            // Código que irá rodar apenas após toda
+            // a árvore do componente ter sido renderizada
+            // const dict = {
+            //     custom: {
+            //         noParticipante: {
+            //             alpha_num: 'Your email is empty'
+            //       },
+            //       name: {
+            //         required: () => 'Your name is empty'
+            //       }
+            //     }
+            //   };
+              this.$validator.localize('pt');
+            console.log("wor")
+        })
+    },
+    computed() {
+        console.log(this.repos())
+    }
 })
 
 function PopulateData() {
-    return [{
-            fieldType: 'SelectList',
-            name: "options",
-            data: ["", "Mr", "Ms", "Mx", "Dr", "Madam", "Lord", "GOT"]
-        },
-        {
-            fieldType: 'TextInput',
-            placeholder: "Last Name",
-            label: "Last Name",
-            name: "cdParticipante",
-            classCss: 'form-control col-md-6',
-        }
-    ]
+    // $.getJSON( "ajax/test.json", function( data ) {
+    //     var items = [];
+    //     $.each( data, function( key, val ) {
+    //       items.push( "<li id='" + key + "'>" + val + "</li>" );
+    //     });
+
+    //     $( "<ul/>", {
+    //       "class": "my-new-list",
+    //       html: items.join( "" )
+    //     }).appendTo( "body" );
+    //   });
+
+
+
+
+    // return [{
+    //         fieldType: 'SelectList',
+    //         name: "options",
+    //         data: ["", "Mr", "Ms", "Mx", "Dr", "Madam", "Lord", "GOT"]
+    //     },
+    //     {
+    //         fieldType: 'TextInput',
+    //         placeholder: "Last Name",
+    //         label: "Last Name",
+    //         name: "cdParticipante",
+    //         default: "Participante 1",
+    //         classCss: 'form-control col-md-6',
+    //     }
+    // ]
 
 
 }
+
 function MountedSelectList(e, $vue) {
 
 
+    const selectOptions = {
 
-        return {
+        fieldType: "SelectList",
+        name: e.dsdetalhescampo.nomeCampo,
+        multi: false,
+        label: e.noCampo,
+        validate: "",
+        options: e.dsdetalhescampo.listavaores
+    }
 
-            fieldType: "SelectList",
-            name: "title",
-            multi: false,
-            label: "Title",
-            validate: "required|min:6",
-            options: e.data
-        }
+    GetValidations(e, selectOptions)
+    return selectOptions;
 }
 
 function MountedTextInput(e) {
-    return {
 
+    const inputText = {
         fieldType: "TextInput",
-        placeholder: "First Name",
-        label: "First Name",
-        validate: "required|min:6",
-        name: e.name,
-        classCss: e.classCss,
+        placeholder: e.noCampo,
+        label: e.noCampo,
+        default: e.default,
+        name: e.dsdetalhescampo.nomeCampo,
+        classCss: e.classcss,
     }
+    inputText.validate = GetValidations(e, inputText)
+    return inputText;
+}
+
+function GetValidations($e, $input) {
+    // var validationsSettings = null;
+    let validationsSettings = {};
+
+
+    if ($e.dsdetalhescampo.obrigatorio) {
+        validationsSettings.required = true;
+
+    }
+    //     validationsSettings.required = true;
+
+    if ($e.minText)
+        validationsSettings += `|min=${$e.minText}`
+
+    if ($e.maxText)
+        validationsSettings += `|max=${$e.maxText}`
+
+
+    if ($e.dsdetalhescampo.obrigatorio)
+        validationsSettings = SetRequiredType($e, $input, validationsSettings)
+
+
+    if ($e.dsdetalhescampo.maiuscMinusc.toLowerCase() === 'Upper'.toLowerCase())
+        $input.label = $input.label.toUpperCase();
+
+    if ($e.dsdetalhescampo.maiuscMinusc.toLowerCase() === 'Lower'.toLowerCase())
+        $input.name = $input.name.toLowerCase();
+
+    if ($e.dsdetalhescampo.obrigatorio)
+        console.log(validationsSettings)
+
+    return validationsSettings
+}
+
+function SetRequiredType($e, $input, $validationsSettings) {
+
+    switch ($e.tipoCampo.tipocampohtml.toLowerCase()) {
+        case 'DATE'.toLowerCase():
+            return $validationsSettings += '|date_format:dd/MM/yyyy'
+            break;
+
+        case 'EMAIL'.toLowerCase():
+            return $validationsSettings.email = true;
+            break;
+
+        case 'CEP'.toLowerCase():
+            return $validationsSettings.digits = 9;
+            break;
+
+        case 'CARD'.toLowerCase():
+            return $validationsSettings.credit_card = true;
+            break;
+
+        case 'TEXT_NUM'.toLowerCase():
+            return $validationsSettings.alpha_num = true;
+            break;
+
+        default:
+            $validationsSettings.alpha_num = true;
+            return $validationsSettings;
+            break;
+    }
+
+
 }

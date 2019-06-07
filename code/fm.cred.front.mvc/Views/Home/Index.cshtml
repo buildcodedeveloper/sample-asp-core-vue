@@ -9,12 +9,16 @@
         <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>
     <form id="app"  class='@Model.FirstOrDefault()?.FormClass'>
-
+        
+  <ul v-if="errors.all() > 0" class="alert alert-danger"></ul>
 <form-generator :schema="schema" v-model="formData">
 </form-generator>
 
-<input v-on:click="checkForm" class="btn btn-success" type="submit" value="Submit" />
-
+ 
+   <div class="form-group col-md-12">
+<a  v-on:click="checkForm" class="btn btn-success">Submit</a>
+</div>
+  </div>
     </form>
 
 
