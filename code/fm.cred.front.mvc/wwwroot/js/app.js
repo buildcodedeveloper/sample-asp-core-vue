@@ -1,6 +1,4 @@
 ﻿
-import axios from '~/node_modules/axios/dist/axios.min.js';
-
 // Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
@@ -23,9 +21,9 @@ const apiUrl = 'https://openwhisk.ng.bluemix.net/api/v1/web/rcamden%40us.ibm.com
 //     validity: true,
 //     useConstraintAttrs: true
 //   };
-Vue.prototype.$axios = axios
+// Vue.prototype.$axios = axios
 
-Vue.use(VeeValidate, axios )
+Vue.use(VeeValidate )
 
 
 
@@ -85,8 +83,8 @@ Vue.component('TextInput', {
     <input   v-validate="validate" type="text"
            :name="name"
            :class="classCss"
-
-
+           :value="value"
+           @input="$emit('input',$event.target.value)"
            :placeholder="placeholder"
            >
 
@@ -184,18 +182,18 @@ const app = new Vue({
         checkForm: function (e) {
             e.preventDefault();
 
-       console.log(this.$validator)
+
            this.$validator.validateAll().then((result) => {
                 if (result) {
                   // eslint-disable-next-line
-                  console.log(result);
+                  console.log(this.formData);
                   console.log('Form Submitted!');
                   return;
                 }
 
                 console.log('Correct them errors!');
               });
-            console.log(this.formData);
+
 
             // this.errors = [];
             // if (this.name === '') {
